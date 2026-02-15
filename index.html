@@ -474,6 +474,10 @@
     window.addEventListener('resize', resize);
     resize();
 
+    const R           = 3;     // fixed radius for all particles
+    const MIN_GAP     = R * 6; // minimum surface-to-surface gap (18px >> radius 3)
+    const MIN_DIST    = R * 2 + MIN_GAP; // minimum center-to-center (24px)
+
     for (let i = 0; i < COUNT; i++) {
       particles.push({
         x:     Math.random() * W,
@@ -481,15 +485,15 @@
         vx:    (Math.random() - 0.5) * 1.2,
         vy:    (Math.random() - 0.5) * 1.2,
         phase: Math.random() * Math.PI * 2,
-        r:     Math.random() * 2 + 2
+        r:     R
       });
     }
 
     const MOUSE_RANGE = 200;
     const MOUSE_FORCE = 0.55;
-    const SEP_DIST    = 28;
+    const SEP_DIST    = MIN_DIST;      // enforce minimum distance
     const ATT_DIST    = 95;
-    const SEP_F       = 0.09;
+    const SEP_F       = 0.55;          // strong repulsion to maintain gap
     const ATT_F       = 0.014;
     const MAX_SPD     = 4;
     const DAMP        = 0.96;
