@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dong Heon Han</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "DM Sans", sans-serif;
+      font-weight: 300;
+      background: #fff;
+      color: #222;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 60px 32px;
+    }
+
+    /* ── Top Section ── */
+    .top-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 32px;
+      margin-bottom: 48px;
+    }
+
+    .info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .info h1 {
+      font-family: "DM Serif Display", serif;
+      font-size: 2.4rem;
+      font-weight: 400;
+      margin-bottom: 6px;
+      letter-spacing: -0.3px;
+    }
+
+    .info .title {
+      font-size: 1rem;
+      color: #333;
+      margin-bottom: 4px;
+    }
+
+    .info .institution {
+      font-size: 1rem;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .info .email a {
+      color: #1a6fb5;
+      text-decoration: underline;
+      font-size: 0.95rem;
+    }
+
+    .info .email a:hover {
+      color: #0d4f8a;
+    }
+
+    .info .address {
+      font-size: 0.88rem;
+      color: #555;
+      margin-top: 6px;
+    }
+
+    /* Photo */
+    .photo {
+      flex-shrink: 0;
+      width: 160px;
+      height: 190px;
+      object-fit: cover;
+      border-radius: 2px;
+    }
+
+    /* ── Bottom Section ── */
+    .bottom-section {
+      display: flex;
+      align-items: flex-start;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 28px;
+      background: #1a1a1a;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-align: center;
+      border-radius: 2px;
+      transition: background 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      background: #444;
+    }
+
+    .bio {
+      flex: 1;
+      min-width: 220px;
+      font-size: 0.95rem;
+      color: #222;
+      line-height: 1.65;
+      padding-top: 4px;
+    }
+
+    .bio strong {
+      font-weight: 700;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 680px) {
+      .top-section {
+        flex-direction: column-reverse;
+        align-items: center;
+      }
+
+      .photo {
+        width: 130px;
+        height: 155px;
+      }
+
+      .info h1 {
+        font-size: 1.7rem;
+      }
+
+      .bottom-section {
+        flex-direction: column;
+        gap: 28px;
+      }
+
+      .buttons {
+        width: 100%;
+      }
+
+      .btn {
+        padding: 10px 16px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .container {
+        padding: 36px 20px;
+      }
+
+      .info h1 {
+        font-size: 1.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Top: info + photo -->
+    <div class="top-section">
+      <div class="info">
+        <h1>Dong Heon Han</h1>
+        <p class="title">Robotics PhD Student | Robotics Hardware &amp; Systems Architecture</p>
+        <p class="institution">University of Michigan - Ann Arbor</p>
+        <p class="email"><a href="mailto:dongheon@umich.edu">dongheon@umich.edu</a></p>
+        <p class="address">Ford Motor Company Robotics Building 2505 Hayward St, Ann Arbor, MI 48109</p>
+      </div>
+      <img class="photo" src="dongheon_headshot.jpg" alt="Dong Heon Han" />
+    </div>
+
+    <!-- Bottom: buttons + bio -->
+    <div class="bottom-section">
+      <div class="buttons">
+        <a class="btn" href="https://scholar.google.com/citations?user=BC46QFMAAAAJ&hl=en" target="_blank" rel="noopener">Scholar</a>
+        <a class="btn" href="dongheon_CV.pdf" target="_blank" rel="noopener">CV</a>
+        <a class="btn" href="https://github.com/dongheonh/microrobot-1024" target="_blank" rel="noopener">Projects</a>
+        <a class="btn" href="https://www.linkedin.com/in/dongheon-han/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+      <div class="bio">
+        <p>
+          <strong>1st year PhD student</strong> working in the SAM Lab under <strong>Prof. Steven Ceron</strong>
+          developing large-scale electromagnetic platforms for microrobot swarms, focusing on collective control
+          and swarmalator dynamics.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
