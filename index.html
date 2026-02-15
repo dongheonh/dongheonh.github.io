@@ -465,7 +465,7 @@
     const ctx    = canvas.getContext('2d');
     let W, H, mouseX = -9999, mouseY = -9999;
     const particles = [];
-    const COUNT = 200;
+    const COUNT = 300;
 
     window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
     window.addEventListener('mouseleave', () => { mouseX = -9999; mouseY = -9999; });
@@ -501,7 +501,7 @@
 
     // ── Particles ──
     const R        = 3;
-    const MIN_GAP  = R * 6;
+    const MIN_GAP  = R * 12;   // doubled (was R*6)
     const MIN_DIST = R * 2 + MIN_GAP;
 
     for (let i = 0; i < COUNT; i++) {
