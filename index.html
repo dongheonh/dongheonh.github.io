@@ -465,7 +465,7 @@
     const ctx    = canvas.getContext('2d');
     let W, H, mouseX = -9999, mouseY = -9999;
     const particles = [];
-    const COUNT = 300;
+    const COUNT = 1000;
 
     window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
     window.addEventListener('mouseleave', () => { mouseX = -9999; mouseY = -9999; });
@@ -473,7 +473,7 @@
     // ── Electromagnet grid (offset / zigzag rows) ──
     const MAG_SX    = 88;          // horizontal spacing
     const MAG_SY    = 68;          // vertical spacing
-    const MAG_R     = 9;           // visual radius
+    const MAG_R     = 27;          // visual radius (3x)
     const DETECT_R  = 62;          // particle detection radius
     const DETECT_R2 = DETECT_R * DETECT_R;
     const DENSITY_MAX = 6;         // particles for full brightness
