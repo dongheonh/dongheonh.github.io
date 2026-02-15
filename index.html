@@ -476,7 +476,7 @@
     const MAG_R     = 13;          // visual radius (1/2 of 27)
     const DETECT_R  = 62;          // particle detection radius
     const DETECT_R2 = DETECT_R * DETECT_R;
-    const DENSITY_MAX = 6;         // particles for full brightness
+    const DENSITY_MAX = 14;        // particles for full brightness (wider range = finer gradation)
     let magnets = [];
 
     function buildMagnets() {
@@ -550,21 +550,30 @@
       // ── 2. Draw electromagnets (behind particles) ──
       for (let m = 0; m < magnets.length; m++) {
         const mg = magnets[m];
-        const target = Math.min(mg._c / DENSITY_MAX, 1);
-        mg.brightness += (target - mg.brightness) * 0.1; // smooth fade
+        // non-linear mapping: sqrt gives fine gradation at low density, pow gives fine gradation at high
+        const raw    = Math.min(mg._c / DENSITY_MAX, 1);
+        const target = Math.pow(raw, 0.55);            // sqrt-ish curve: low end is more expressive
+        mg.brightness += (target - mg.brightness) * 0.08; // gentle lerp for smooth fade
         const b = mg.brightness;
 
+        // always draw base ring (faint, shows grid structure)
         ctx.beginPath();
         ctx.arc(mg.x, mg.y, MAG_R, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(${C.magOff},${0.10 + b * 0.08})`;
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
 
-        if (b > 0.03) {
-          ctx.fillStyle   = `rgba(${C.magOn},${0.12 + b * 0.72})`;
-          ctx.shadowColor = `rgba(${C.magOn},${b * 0.55})`;
-          ctx.shadowBlur  = 16 * b;
-          ctx.fill();
-          ctx.shadowBlur  = 0;
-        } else {
-          ctx.fillStyle = `rgba(${C.magOff},0.13)`;
+        if (b > 0.015) {
+          // radial gradient — bright core fading outward (much more nuanced than flat fill)
+          const grad = ctx.createRadialGradient(mg.x, mg.y, 0, mg.x, mg.y, MAG_R * (1 + b * 0.6));
+          grad.addColorStop(0,   `rgba(${C.magOn},${b * 0.92})`);
+          grad.addColorStop(0.45,`rgba(${C.magOn},${b * 0.55})`);
+          grad.addColorStop(0.8, `rgba(${C.magOn},${b * 0.18})`);
+          grad.addColorStop(1,   `rgba(${C.magOn},0)`);
+
+          ctx.beginPath();
+          ctx.arc(mg.x, mg.y, MAG_R * (1 + b * 0.6), 0, Math.PI * 2);
+          ctx.fillStyle = grad;
           ctx.fill();
         }
       }
