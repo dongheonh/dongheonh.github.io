@@ -28,7 +28,8 @@
       --toggle-bg:    #e0e0e0;
       --toggle-knob:  #fff;
       --particle-color: 80, 80, 80;
-      --cursor-color: #1a1a1a;
+      --border:       #e4e4e4;
+      --card-bg:      #f8f8f8;
     }
 
     [data-theme="dark"] {
@@ -44,42 +45,8 @@
       --toggle-bg:    #444444;
       --toggle-knob:  #111;
       --particle-color: 180, 180, 180;
-      --cursor-color: #e8e8e8;
-    }
-
-    /* ── Custom cursor ── */
-    * { cursor: none !important; }
-
-    #cursor-dot {
-      position: fixed;
-      width: 8px;
-      height: 8px;
-      background: var(--cursor-color);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      transition: background 0.25s;
-    }
-
-    #cursor-ring {
-      position: fixed;
-      width: 32px;
-      height: 32px;
-      border: 1.5px solid var(--cursor-color);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9998;
-      transform: translate(-50%, -50%);
-      transition: width 0.2s ease, height 0.2s ease,
-                  border-color 0.25s, opacity 0.2s;
-      opacity: 0.6;
-    }
-
-    body.cursor-hover #cursor-ring {
-      width: 48px;
-      height: 48px;
-      opacity: 0.3;
+      --border:       #2a2a2a;
+      --card-bg:      #161616;
     }
 
     body {
@@ -113,6 +80,7 @@
       border: none;
       padding: 0;
       z-index: 100;
+      cursor: pointer;
     }
 
     .toggle-track {
@@ -149,7 +117,7 @@
       z-index: 1;
       max-width: 960px;
       margin: 0 auto;
-      padding: 60px 32px;
+      padding: 60px 32px 80px;
     }
 
     /* ── Fade-in on scroll ── */
@@ -250,6 +218,7 @@
       align-items: flex-start;
       gap: 40px;
       flex-wrap: wrap;
+      margin-bottom: 64px;
     }
 
     .buttons {
@@ -271,6 +240,7 @@
       border-radius: 2px;
       position: relative;
       overflow: hidden;
+      cursor: pointer;
       transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
     }
     .btn:hover {
@@ -288,12 +258,8 @@
       animation: ripple-anim 0.5s linear;
       pointer-events: none;
     }
-    [data-theme="dark"] .ripple {
-      background: rgba(0,0,0,0.15);
-    }
-    @keyframes ripple-anim {
-      to { transform: scale(4); opacity: 0; }
-    }
+    [data-theme="dark"] .ripple { background: rgba(0,0,0,0.15); }
+    @keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
 
     .bio {
       flex: 1;
@@ -304,6 +270,116 @@
       padding-top: 4px;
     }
     .bio strong { font-weight: 700; }
+
+    /* ── Publications Section ── */
+    .section-title {
+      font-family: "DM Serif Display", serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .section-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 28px;
+    }
+
+    /* Loading skeleton */
+    .pub-skeleton {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .skeleton-line {
+      height: 14px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--border) 25%, var(--card-bg) 50%, var(--border) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+    }
+    @keyframes shimmer { to { background-position: -200% 0; } }
+
+    /* Publication cards */
+    .pub-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .pub-item {
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+    .pub-item:first-child { border-top: 1px solid var(--border); }
+
+    .pub-title {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.5;
+      margin-bottom: 5px;
+      text-decoration: none;
+      display: block;
+      transition: color 0.15s;
+    }
+    .pub-title:hover { color: var(--link); }
+
+    .pub-authors {
+      font-size: 0.82rem;
+      color: var(--text-mute);
+      margin-bottom: 4px;
+    }
+
+    .pub-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .pub-venue {
+      font-size: 0.82rem;
+      color: var(--text-sub);
+      font-style: italic;
+    }
+
+    .pub-year {
+      font-size: 0.78rem;
+      color: var(--text-mute);
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 1px 7px;
+    }
+
+    .pub-cite {
+      font-size: 0.78rem;
+      color: var(--text-mute);
+    }
+
+    .pub-error, .pub-empty {
+      font-size: 0.9rem;
+      color: var(--text-mute);
+      padding: 20px 0;
+    }
+
+    .pub-error a, .pub-empty a {
+      color: var(--link);
+    }
+
+    .scholar-link {
+      display: inline-block;
+      margin-top: 20px;
+      font-size: 0.85rem;
+      color: var(--link);
+      text-decoration: underline;
+      transition: color 0.15s;
+    }
+    .scholar-link:hover { color: var(--link-hover); }
 
     /* ── Responsive ── */
     @media (max-width: 680px) {
@@ -316,22 +392,12 @@
     }
 
     @media (max-width: 400px) {
-      .container { padding: 36px 20px; }
+      .container { padding: 36px 20px 60px; }
       .info h1 { font-size: 1.4rem; }
-    }
-
-    /* mobile: restore default cursor */
-    @media (hover: none) {
-      * { cursor: auto !important; }
-      #cursor-dot, #cursor-ring { display: none; }
     }
   </style>
 </head>
 <body>
-
-  <!-- Custom cursor -->
-  <div id="cursor-dot"></div>
-  <div id="cursor-ring"></div>
 
   <!-- Particle canvas -->
   <canvas id="particle-canvas"></canvas>
@@ -356,7 +422,7 @@
       <img class="photo fade-in delay-2" src="dongheon_headshot.jpg" alt="Dong Heon Han" />
     </div>
 
-    <!-- Bottom -->
+    <!-- Buttons + Bio -->
     <div class="bottom-section fade-in delay-4">
       <div class="buttons">
         <a class="btn" href="https://scholar.google.com/citations?user=BC46QFMAAAAJ&hl=en" target="_blank" rel="noopener">Scholar</a>
@@ -371,6 +437,25 @@
           and swarmalator dynamics.
         </p>
       </div>
+    </div>
+
+    <!-- Publications -->
+    <div class="fade-in">
+      <h2 class="section-title">Publications</h2>
+      <div class="section-divider"></div>
+      <div id="pub-container">
+        <!-- skeleton -->
+        <div class="pub-skeleton">
+          <div class="skeleton-line" style="width:70%"></div>
+          <div class="skeleton-line" style="width:45%"></div>
+          <div class="skeleton-line" style="width:30%"></div>
+        </div>
+      </div>
+      <a class="scholar-link"
+         href="https://scholar.google.com/citations?user=BC46QFMAAAAJ&hl=en"
+         target="_blank" rel="noopener">
+        View full profile on Google Scholar →
+      </a>
     </div>
 
   </div>
@@ -392,31 +477,7 @@
       localStorage.setItem('theme', next);
     }
 
-    /* ── Custom cursor ── */
-    const dot  = document.getElementById('cursor-dot');
-    const ring = document.getElementById('cursor-ring');
-    let ringX = 0, ringY = 0, mouseX = 0, mouseY = 0;
-
-    document.addEventListener('mousemove', e => {
-      mouseX = e.clientX; mouseY = e.clientY;
-      dot.style.left = mouseX + 'px';
-      dot.style.top  = mouseY + 'px';
-    });
-
-    (function animateRing() {
-      ringX += (mouseX - ringX) * 0.12;
-      ringY += (mouseY - ringY) * 0.12;
-      ring.style.left = ringX + 'px';
-      ring.style.top  = ringY + 'px';
-      requestAnimationFrame(animateRing);
-    })();
-
-    document.querySelectorAll('a, button').forEach(el => {
-      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-    });
-
-    /* ── Ripple on buttons ── */
+    /* ── Ripple ── */
     document.querySelectorAll('.btn').forEach(btn => {
       btn.addEventListener('click', function(e) {
         const rect = this.getBoundingClientRect();
@@ -447,12 +508,11 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      const nameEl  = document.getElementById('typed-name');
-      const titleEl = document.getElementById('typed-title');
-      typeText(nameEl, 'Dong Heon Han', 60, () => {
+      typeText(document.getElementById('typed-name'), 'Dong Heon Han', 60, () => {
         setTimeout(() => {
           document.getElementById('typed-name').querySelector('.typing-cursor')?.remove();
-          typeText(titleEl, 'Robotics PhD Student | Robotics Hardware & Systems Architecture', 28);
+          typeText(document.getElementById('typed-title'),
+            'Robotics PhD Student | Robotics Hardware & Systems Architecture', 28);
         }, 300);
       });
     });
@@ -460,28 +520,23 @@
     /* ── Scroll fade-in ── */
     const observer = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.15 });
+    }, { threshold: 0.1 });
 
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-    // Trigger immediately-visible elements
     setTimeout(() => {
       document.querySelectorAll('.fade-in').forEach(el => {
-        const rect = el.getBoundingClientRect();
-        if (rect.top < window.innerHeight) el.classList.add('visible');
+        if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('visible');
       });
     }, 100);
 
     /* ── Particle canvas ── */
     const canvas = document.getElementById('particle-canvas');
     const ctx    = canvas.getContext('2d');
-    let W, H, particles = [];
+    let W, H;
+    const particles = [];
     const COUNT = 55, LINK_DIST = 130, SPEED = 0.35;
 
-    function resize() {
-      W = canvas.width  = window.innerWidth;
-      H = canvas.height = window.innerHeight;
-    }
+    function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
     window.addEventListener('resize', resize);
     resize();
 
@@ -494,26 +549,18 @@
       });
     }
 
-    function getParticleColor() {
-      const style = getComputedStyle(document.documentElement);
-      return style.getPropertyValue('--particle-color').trim() || '80,80,80';
-    }
-
     function drawParticles() {
       ctx.clearRect(0, 0, W, H);
-      const color = getParticleColor();
-
+      const color = getComputedStyle(html).getPropertyValue('--particle-color').trim();
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
         p.x += p.vx; p.y += p.vy;
         if (p.x < 0 || p.x > W) p.vx *= -1;
         if (p.y < 0 || p.y > H) p.vy *= -1;
-
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(${color}, 0.45)`;
         ctx.fill();
-
         for (let j = i + 1; j < particles.length; j++) {
           const q = particles[j];
           const dx = p.x - q.x, dy = p.y - q.y;
@@ -531,6 +578,110 @@
       requestAnimationFrame(drawParticles);
     }
     drawParticles();
+
+    /* ── Publications via Semantic Scholar API ── */
+    const AUTHOR_NAME  = 'Dong Heon Han';
+    const SCHOLAR_URL  = 'https://scholar.google.com/citations?user=BC46QFMAAAAJ&hl=en';
+
+    function boldName(authorsStr) {
+      return authorsStr.replace(
+        /Dong[\s\-]?Heon[\s\-]?Han/gi,
+        m => `<strong>${m}</strong>`
+      );
+    }
+
+    function truncateAuthors(authors) {
+      if (!authors || authors.length === 0) return 'Unknown authors';
+      const names = authors.map(a => a.name);
+      if (names.length <= 4) return boldName(names.join(', '));
+      return boldName(names.slice(0, 3).join(', ') + ` … +${names.length - 3} more`);
+    }
+
+    function renderPubs(papers) {
+      const container = document.getElementById('pub-container');
+      if (!papers || papers.length === 0) {
+        container.innerHTML = `<p class="pub-empty">
+          No publications indexed yet.
+          <a href="${SCHOLAR_URL}" target="_blank" rel="noopener">View on Google Scholar</a>.
+        </p>`;
+        return;
+      }
+
+      // sort by year desc
+      papers.sort((a, b) => (b.year || 0) - (a.year || 0));
+
+      const list = document.createElement('div');
+      list.className = 'pub-list';
+
+      papers.forEach(p => {
+        const item = document.createElement('div');
+        item.className = 'pub-item fade-in';
+
+        const url = p.externalIds?.DOI
+          ? `https://doi.org/${p.externalIds.DOI}`
+          : (p.url || SCHOLAR_URL);
+
+        item.innerHTML = `
+          <a class="pub-title" href="${url}" target="_blank" rel="noopener">${p.title || 'Untitled'}</a>
+          <p class="pub-authors">${truncateAuthors(p.authors)}</p>
+          <div class="pub-meta">
+            ${p.venue ? `<span class="pub-venue">${p.venue}</span>` : ''}
+            ${p.year  ? `<span class="pub-year">${p.year}</span>` : ''}
+            ${p.citationCount > 0 ? `<span class="pub-cite">Cited by ${p.citationCount}</span>` : ''}
+          </div>`;
+
+        list.appendChild(item);
+      });
+
+      container.innerHTML = '';
+      container.appendChild(list);
+
+      // trigger fade-in for newly added items
+      setTimeout(() => {
+        container.querySelectorAll('.fade-in').forEach((el, i) => {
+          setTimeout(() => el.classList.add('visible'), i * 80);
+        });
+      }, 50);
+    }
+
+    async function loadPublications() {
+      try {
+        // Step 1: find author ID
+        const searchRes = await fetch(
+          `https://api.semanticscholar.org/graph/v1/author/search?query=${encodeURIComponent(AUTHOR_NAME)}&fields=name,affiliations,paperCount`,
+          { headers: { 'Accept': 'application/json' } }
+        );
+        const searchData = await searchRes.json();
+        const authors = searchData.data || [];
+
+        // pick the one with a University of Michigan affiliation if possible
+        let author = authors.find(a =>
+          a.affiliations?.some(af => /michigan/i.test(af.name))
+        ) || authors[0];
+
+        if (!author) {
+          renderPubs([]);
+          return;
+        }
+
+        // Step 2: fetch papers
+        const papersRes = await fetch(
+          `https://api.semanticscholar.org/graph/v1/author/${author.authorId}/papers?fields=title,year,venue,authors,citationCount,externalIds,url&limit=20`,
+          { headers: { 'Accept': 'application/json' } }
+        );
+        const papersData = await papersRes.json();
+        renderPubs(papersData.data || []);
+
+      } catch (err) {
+        document.getElementById('pub-container').innerHTML = `
+          <p class="pub-error">
+            Could not load publications automatically.
+            <a href="${SCHOLAR_URL}" target="_blank" rel="noopener">View on Google Scholar →</a>
+          </p>`;
+      }
+    }
+
+    loadPublications();
   </script>
 
 </body>
