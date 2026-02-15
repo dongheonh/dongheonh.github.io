@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,14 +14,92 @@
       padding: 0;
     }
 
+    /* ── Theme variables ── */
+    :root {
+      --bg:        #ffffff;
+      --text:      #222222;
+      --text-sub:  #333333;
+      --text-mute: #555555;
+      --link:      #1a6fb5;
+      --link-hover:#0d4f8a;
+      --btn-bg:    #1a1a1a;
+      --btn-hover: #444444;
+      --btn-text:  #ffffff;
+      --toggle-bg: #e0e0e0;
+      --toggle-knob: #fff;
+    }
+
+    [data-theme="dark"] {
+      --bg:        #111111;
+      --text:      #e8e8e8;
+      --text-sub:  #bbbbbb;
+      --text-mute: #888888;
+      --link:      #6aadff;
+      --link-hover:#99c8ff;
+      --btn-bg:    #e8e8e8;
+      --btn-hover: #cccccc;
+      --btn-text:  #111111;
+      --toggle-bg: #444444;
+      --toggle-knob: #111;
+    }
+
     body {
       font-family: "DM Sans", sans-serif;
       font-weight: 300;
-      background: #fff;
-      color: #222;
+      background: var(--bg);
+      color: var(--text);
       line-height: 1.5;
+      transition: background 0.25s ease, color 0.25s ease;
     }
 
+    /* ── Toggle button ── */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      z-index: 100;
+    }
+
+    .toggle-track {
+      width: 40px;
+      height: 22px;
+      background: var(--toggle-bg);
+      border-radius: 11px;
+      position: relative;
+      transition: background 0.25s ease;
+    }
+
+    .toggle-knob {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 16px;
+      height: 16px;
+      background: var(--toggle-knob);
+      border-radius: 50%;
+      transition: transform 0.25s ease, background 0.25s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+    }
+
+    [data-theme="dark"] .toggle-knob {
+      transform: translateX(18px);
+    }
+
+    .toggle-icon {
+      font-size: 0.9rem;
+      line-height: 1;
+      color: var(--text-mute);
+      user-select: none;
+    }
+
+    /* ── Layout ── */
     .container {
       max-width: 960px;
       margin: 0 auto;
@@ -48,33 +126,34 @@
       font-weight: 400;
       margin-bottom: 6px;
       letter-spacing: -0.3px;
+      color: var(--text);
     }
 
     .info .title {
       font-size: 1rem;
-      color: #333;
+      color: var(--text-sub);
       margin-bottom: 4px;
     }
 
     .info .institution {
       font-size: 1rem;
-      color: #333;
+      color: var(--text-sub);
       margin-bottom: 20px;
     }
 
     .info .email a {
-      color: #1a6fb5;
+      color: var(--link);
       text-decoration: underline;
       font-size: 0.95rem;
     }
 
     .info .email a:hover {
-      color: #0d4f8a;
+      color: var(--link-hover);
     }
 
     .info .address {
       font-size: 0.88rem;
-      color: #555;
+      color: var(--text-mute);
       margin-top: 6px;
     }
 
@@ -105,26 +184,26 @@
     .btn {
       display: inline-block;
       padding: 10px 28px;
-      background: #1a1a1a;
-      color: #fff;
+      background: var(--btn-bg);
+      color: var(--btn-text);
       text-decoration: none;
       font-size: 0.9rem;
       font-weight: 500;
       text-align: center;
       border-radius: 2px;
-      transition: background 0.15s ease;
+      transition: background 0.15s ease, color 0.15s ease;
       white-space: nowrap;
     }
 
     .btn:hover {
-      background: #444;
+      background: var(--btn-hover);
     }
 
     .bio {
       flex: 1;
       min-width: 220px;
       font-size: 0.95rem;
-      color: #222;
+      color: var(--text);
       line-height: 1.65;
       padding-top: 4px;
     }
@@ -175,6 +254,15 @@
   </style>
 </head>
 <body>
+
+  <!-- Dark / Light toggle -->
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+    <span class="toggle-icon" id="toggle-label">☀️</span>
+    <div class="toggle-track">
+      <div class="toggle-knob"></div>
+    </div>
+  </button>
+
   <div class="container">
 
     <!-- Top: info + photo -->
@@ -207,5 +295,26 @@
     </div>
 
   </div>
+
+  <script>
+    const html = document.documentElement;
+    const label = document.getElementById('toggle-label');
+
+    // 시스템 테마 또는 저장된 설정 적용
+    const saved = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initial = saved || (prefersDark ? 'dark' : 'light');
+    html.setAttribute('data-theme', initial);
+    label.textContent = initial === 'dark' ? '🌙' : '☀️';
+
+    function toggleTheme() {
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      label.textContent = next === 'dark' ? '🌙' : '☀️';
+      localStorage.setItem('theme', next);
+    }
+  </script>
+
 </body>
 </html>
