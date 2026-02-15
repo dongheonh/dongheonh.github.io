@@ -28,8 +28,6 @@
       --toggle-bg:    #e0e0e0;
       --toggle-knob:  #fff;
       --particle-color: 80, 80, 80;
-      --border:       #e4e4e4;
-      --card-bg:      #f8f8f8;
     }
 
     [data-theme="dark"] {
@@ -45,8 +43,6 @@
       --toggle-bg:    #444444;
       --toggle-knob:  #111;
       --particle-color: 180, 180, 180;
-      --border:       #2a2a2a;
-      --card-bg:      #161616;
     }
 
     body {
@@ -271,115 +267,6 @@
     }
     .bio strong { font-weight: 700; }
 
-    /* ── Publications Section ── */
-    .section-title {
-      font-family: "DM Serif Display", serif;
-      font-size: 1.5rem;
-      font-weight: 400;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-
-    .section-divider {
-      width: 100%;
-      height: 1px;
-      background: var(--border);
-      margin-bottom: 28px;
-    }
-
-    /* Loading skeleton */
-    .pub-skeleton {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .skeleton-line {
-      height: 14px;
-      border-radius: 4px;
-      background: linear-gradient(90deg, var(--border) 25%, var(--card-bg) 50%, var(--border) 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.4s infinite;
-    }
-    @keyframes shimmer { to { background-position: -200% 0; } }
-
-    /* Publication cards */
-    .pub-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    .pub-item {
-      padding: 18px 0;
-      border-bottom: 1px solid var(--border);
-      transition: background 0.15s;
-    }
-    .pub-item:first-child { border-top: 1px solid var(--border); }
-
-    .pub-title {
-      font-size: 0.95rem;
-      font-weight: 500;
-      color: var(--text);
-      line-height: 1.5;
-      margin-bottom: 5px;
-      text-decoration: none;
-      display: block;
-      transition: color 0.15s;
-    }
-    .pub-title:hover { color: var(--link); }
-
-    .pub-authors {
-      font-size: 0.82rem;
-      color: var(--text-mute);
-      margin-bottom: 4px;
-    }
-
-    .pub-meta {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .pub-venue {
-      font-size: 0.82rem;
-      color: var(--text-sub);
-      font-style: italic;
-    }
-
-    .pub-year {
-      font-size: 0.78rem;
-      color: var(--text-mute);
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 3px;
-      padding: 1px 7px;
-    }
-
-    .pub-cite {
-      font-size: 0.78rem;
-      color: var(--text-mute);
-    }
-
-    .pub-error, .pub-empty {
-      font-size: 0.9rem;
-      color: var(--text-mute);
-      padding: 20px 0;
-    }
-
-    .pub-error a, .pub-empty a {
-      color: var(--link);
-    }
-
-    .scholar-link {
-      display: inline-block;
-      margin-top: 20px;
-      font-size: 0.85rem;
-      color: var(--link);
-      text-decoration: underline;
-      transition: color 0.15s;
-    }
-    .scholar-link:hover { color: var(--link-hover); }
 
     /* ── Responsive ── */
     @media (max-width: 680px) {
@@ -439,24 +326,6 @@
       </div>
     </div>
 
-    <!-- Publications -->
-    <div class="fade-in">
-      <h2 class="section-title">Publications</h2>
-      <div class="section-divider"></div>
-      <div id="pub-container">
-        <!-- skeleton -->
-        <div class="pub-skeleton">
-          <div class="skeleton-line" style="width:70%"></div>
-          <div class="skeleton-line" style="width:45%"></div>
-          <div class="skeleton-line" style="width:30%"></div>
-        </div>
-      </div>
-      <a class="scholar-link"
-         href="https://scholar.google.com/citations?user=BC46QFMAAAAJ&hl=en"
-         target="_blank" rel="noopener">
-        View full profile on Google Scholar →
-      </a>
-    </div>
 
   </div>
 
@@ -579,109 +448,6 @@
     }
     drawParticles();
 
-    /* ── Publications via Semantic Scholar API ── */
-    const AUTHOR_NAME  = 'Dong Heon Han';
-    const SCHOLAR_URL  = 'https://scholar.google.com/citations?user=BC46QFMAAAAJ&hl=en';
-
-    function boldName(authorsStr) {
-      return authorsStr.replace(
-        /Dong[\s\-]?Heon[\s\-]?Han/gi,
-        m => `<strong>${m}</strong>`
-      );
-    }
-
-    function truncateAuthors(authors) {
-      if (!authors || authors.length === 0) return 'Unknown authors';
-      const names = authors.map(a => a.name);
-      if (names.length <= 4) return boldName(names.join(', '));
-      return boldName(names.slice(0, 3).join(', ') + ` … +${names.length - 3} more`);
-    }
-
-    function renderPubs(papers) {
-      const container = document.getElementById('pub-container');
-      if (!papers || papers.length === 0) {
-        container.innerHTML = `<p class="pub-empty">
-          No publications indexed yet.
-          <a href="${SCHOLAR_URL}" target="_blank" rel="noopener">View on Google Scholar</a>.
-        </p>`;
-        return;
-      }
-
-      // sort by year desc
-      papers.sort((a, b) => (b.year || 0) - (a.year || 0));
-
-      const list = document.createElement('div');
-      list.className = 'pub-list';
-
-      papers.forEach(p => {
-        const item = document.createElement('div');
-        item.className = 'pub-item fade-in';
-
-        const url = p.externalIds?.DOI
-          ? `https://doi.org/${p.externalIds.DOI}`
-          : (p.url || SCHOLAR_URL);
-
-        item.innerHTML = `
-          <a class="pub-title" href="${url}" target="_blank" rel="noopener">${p.title || 'Untitled'}</a>
-          <p class="pub-authors">${truncateAuthors(p.authors)}</p>
-          <div class="pub-meta">
-            ${p.venue ? `<span class="pub-venue">${p.venue}</span>` : ''}
-            ${p.year  ? `<span class="pub-year">${p.year}</span>` : ''}
-            ${p.citationCount > 0 ? `<span class="pub-cite">Cited by ${p.citationCount}</span>` : ''}
-          </div>`;
-
-        list.appendChild(item);
-      });
-
-      container.innerHTML = '';
-      container.appendChild(list);
-
-      // trigger fade-in for newly added items
-      setTimeout(() => {
-        container.querySelectorAll('.fade-in').forEach((el, i) => {
-          setTimeout(() => el.classList.add('visible'), i * 80);
-        });
-      }, 50);
-    }
-
-    async function loadPublications() {
-      try {
-        // Step 1: find author ID
-        const searchRes = await fetch(
-          `https://api.semanticscholar.org/graph/v1/author/search?query=${encodeURIComponent(AUTHOR_NAME)}&fields=name,affiliations,paperCount`,
-          { headers: { 'Accept': 'application/json' } }
-        );
-        const searchData = await searchRes.json();
-        const authors = searchData.data || [];
-
-        // pick the one with a University of Michigan affiliation if possible
-        let author = authors.find(a =>
-          a.affiliations?.some(af => /michigan/i.test(af.name))
-        ) || authors[0];
-
-        if (!author) {
-          renderPubs([]);
-          return;
-        }
-
-        // Step 2: fetch papers
-        const papersRes = await fetch(
-          `https://api.semanticscholar.org/graph/v1/author/${author.authorId}/papers?fields=title,year,venue,authors,citationCount,externalIds,url&limit=20`,
-          { headers: { 'Accept': 'application/json' } }
-        );
-        const papersData = await papersRes.json();
-        renderPubs(papersData.data || []);
-
-      } catch (err) {
-        document.getElementById('pub-container').innerHTML = `
-          <p class="pub-error">
-            Could not load publications automatically.
-            <a href="${SCHOLAR_URL}" target="_blank" rel="noopener">View on Google Scholar →</a>
-          </p>`;
-      }
-    }
-
-    loadPublications();
   </script>
 
 </body>
