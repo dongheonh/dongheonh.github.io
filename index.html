@@ -477,6 +477,7 @@
     const DETECT_R  = 62;          // particle detection radius
     const DETECT_R2 = DETECT_R * DETECT_R;
     const DENSITY_MAX = 14;        // particles for full brightness (wider range = finer gradation)
+    const DENSITY_THRESHOLD = 5;   // particles required before any glow starts
     let magnets = [];
 
     function buildMagnets() {
@@ -551,7 +552,7 @@
       for (let m = 0; m < magnets.length; m++) {
         const mg = magnets[m];
         // non-linear mapping: sqrt gives fine gradation at low density, pow gives fine gradation at high
-        const raw    = Math.min(mg._c / DENSITY_MAX, 1);
+        const raw    = Math.max(0, Math.min((mg._c - DENSITY_THRESHOLD) / (DENSITY_MAX - DENSITY_THRESHOLD), 1));
         const target = Math.pow(raw, 0.55);            // sqrt-ish curve: low end is more expressive
         mg.brightness += (target - mg.brightness) * 0.08; // gentle lerp for smooth fade
         const b = mg.brightness;
