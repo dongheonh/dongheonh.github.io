@@ -413,34 +413,21 @@
       });
     });
 
-    /* ── Text Scramble ── */
-    const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
-
-    function scramble(el, finalText, duration, onDone) {
-      const total = Math.floor(duration / 30);
-      let frame = 0;
+    /* ── Typing animation ── */
+    function typeText(el, text, speed, onDone) {
+      let i = 0;
+      const cursor = document.createElement('span');
+      cursor.className = 'typing-cursor';
       el.innerHTML = '';
-
-      const interval = setInterval(() => {
-        const progress = frame / total;
-        const revealed = Math.floor(progress * finalText.length);
-        let out = '';
-        for (let i = 0; i < finalText.length; i++) {
-          if (finalText[i] === ' ') { out += ' '; continue; }
-          if (i < revealed) {
-            out += finalText[i];
-          } else {
-            out += CHARS[Math.floor(Math.random() * CHARS.length)];
-          }
-        }
-        el.textContent = out;
-        frame++;
-        if (frame > total) {
-          clearInterval(interval);
-          el.textContent = finalText;
+      el.appendChild(cursor);
+      const t = setInterval(() => {
+        el.insertBefore(document.createTextNode(text[i++]), cursor);
+        if (i === text.length) {
+          clearInterval(t);
           if (onDone) onDone();
+          else setTimeout(() => cursor.remove(), 1200);
         }
-      }, 30);
+      }, speed);
     }
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -452,11 +439,12 @@
         document.getElementById('photo-wrap').classList.add('revealed');
       }, 200);
 
-      // Scramble name then title
-      scramble(nameEl, 'Dong Heon Han', 900, () => {
+      // Typing animation
+      typeText(nameEl, 'Dong Heon Han', 60, () => {
         setTimeout(() => {
-          scramble(titleEl, 'Robotics PhD Student | Robotics Hardware & Systems Architecture', 1400);
-        }, 200);
+          nameEl.querySelector('.typing-cursor')?.remove();
+          typeText(titleEl, 'Robotics PhD Student | Robotics Hardware & Systems Architecture', 28);
+        }, 300);
       });
     });
 
