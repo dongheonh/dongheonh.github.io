@@ -46,91 +46,48 @@
   </script>
 
   <link rel="icon" href="icon.png" type="image/png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ── Theme ── */
     :root {
-      --bg:             #f0f0ef;
-      --text:           #1a1a1a;
-      --text-sub:       #333;
-      --text-mute:      #666;
-      --link:           #1a6fb5;
-      --link-hover:     #0d4f8a;
-      --btn-bg:         #1a1a1a;
-      --btn-hover:      #333;
-      --btn-text:       #fff;
-      --toggle-bg:      #d0d0d0;
-      --toggle-knob:    #fff;
-      --particle-color: 60, 60, 60;
-      --glass-bg:       rgba(255,255,255,0.55);
-      --glass-border:   rgba(255,255,255,0.75);
-      --progress-color: #1a1a1a;
+      --bg:          #f0f0ef;
+      --text:        #1a1a1a;
+      --text-sub:    #333;
+      --text-mute:   #666;
+      --link:        #1a6fb5;
+      --link-hover:  #0d4f8a;
+      --btn-bg:      #1a1a1a;
+      --btn-hover:   #333;
+      --btn-text:    #fff;
+      --toggle-bg:   #d0d0d0;
+      --toggle-knob: #fff;
+      --card-bg:     #fff;
+      --card-border: #e2e2e0;
     }
 
     [data-theme="dark"] {
-      --bg:             #0a0a0a;
-      --text:           #e8e8e8;
-      --text-sub:       #bbb;
-      --text-mute:      #777;
-      --link:           #6aadff;
-      --link-hover:     #99c8ff;
-      --btn-bg:         #e8e8e8;
-      --btn-hover:      #ccc;
-      --btn-text:       #111;
-      --toggle-bg:      #333;
-      --toggle-knob:    #111;
-      --particle-color: 160, 160, 160;
-      --glass-bg:       rgba(20,20,20,0.55);
-      --glass-border:   rgba(255,255,255,0.08);
-      --progress-color: #e8e8e8;
+      --bg:          #0a0a0a;
+      --text:        #e8e8e8;
+      --text-sub:    #bbb;
+      --text-mute:   #777;
+      --link:        #6aadff;
+      --link-hover:  #99c8ff;
+      --btn-bg:      #e8e8e8;
+      --btn-hover:   #ccc;
+      --btn-text:    #111;
+      --toggle-bg:   #333;
+      --toggle-knob: #111;
+      --card-bg:     #131313;
+      --card-border: #262626;
     }
 
-    html { scroll-behavior: smooth; }
-
     body {
-      font-family: "DM Sans", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
       font-weight: 300;
       background: var(--bg);
       color: var(--text);
       line-height: 1.5;
-      transition: background 0.35s ease, color 0.35s ease;
-      overflow-x: hidden;
       min-height: 100vh;
-    }
-
-    /* ── Grain overlay ── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      z-index: 9990;
-      pointer-events: none;
-      opacity: 0.035;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-      background-size: 180px 180px;
-    }
-
-    /* ── Scroll progress bar ── */
-    #progress-bar {
-      position: fixed;
-      top: 0; left: 0;
-      height: 2px;
-      width: 0%;
-      background: var(--progress-color);
-      z-index: 9999;
-      transition: background 0.35s ease;
-    }
-
-    /* ── Particle canvas ── */
-    #particle-canvas {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
     }
 
     /* ── Theme toggle ── */
@@ -143,7 +100,6 @@
       background: none;
       border: none;
       padding: 0;
-      z-index: 200;
       cursor: pointer;
     }
     .toggle-track {
@@ -151,7 +107,6 @@
       background: var(--toggle-bg);
       border-radius: 11px;
       position: relative;
-      transition: background 0.25s;
     }
     .toggle-knob {
       position: absolute;
@@ -159,41 +114,21 @@
       width: 16px; height: 16px;
       background: var(--toggle-knob);
       border-radius: 50%;
-      transition: transform 0.25s, background 0.25s;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+      transition: transform 0.2s;
     }
     [data-theme="dark"] .toggle-knob { transform: translateX(18px); }
     .toggle-icon { font-size: 0.9rem; color: var(--text-mute); user-select: none; }
 
-    /* ── Glassmorphism card ── */
-    .glass-card {
-      position: relative;
-      z-index: 1;
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      border-radius: 16px;
-      backdrop-filter: blur(18px) saturate(1.4);
-      -webkit-backdrop-filter: blur(18px) saturate(1.4);
-      box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+    /* ── Card ── */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
       padding: 48px 48px 44px;
       max-width: 960px;
-      margin: 60px auto;
-      transition: background 0.35s, border-color 0.35s, box-shadow 0.35s;
+      margin: 80px auto;
     }
 
-    /* ── Fade-in ── */
-    .fade-in {
-      opacity: 0;
-      transform: translateY(22px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .fade-in.visible { opacity: 1; transform: translateY(0); }
-    .fade-in.delay-1 { transition-delay: 0.1s; }
-    .fade-in.delay-2 { transition-delay: 0.22s; }
-    .fade-in.delay-3 { transition-delay: 0.38s; }
-    .fade-in.delay-4 { transition-delay: 0.55s; }
-
-    /* ── Top section ── */
     .top-section {
       display: flex;
       justify-content: space-between;
@@ -203,31 +138,17 @@
     }
     .info { flex: 1; min-width: 0; }
 
-    /* Scramble / typing cursor */
-    .typing-cursor {
-      display: inline-block;
-      width: 2px; height: 1em;
-      background: var(--text);
-      margin-left: 3px;
-      vertical-align: middle;
-      animation: blink 0.75s step-end infinite;
-    }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-
     .info h1 {
-      font-family: "DM Serif Display", serif;
       font-size: 2.4rem;
-      font-weight: 400;
+      font-weight: 500;
       margin-bottom: 6px;
       letter-spacing: -0.3px;
       color: var(--text);
-      min-height: 3rem;
     }
     .info .title {
       font-size: 1rem;
       color: var(--text-sub);
       margin-bottom: 4px;
-      min-height: 1.5rem;
     }
     .info .institution {
       font-size: 1rem;
@@ -238,7 +159,6 @@
       color: var(--link);
       text-decoration: underline;
       font-size: 0.95rem;
-      transition: color 0.15s;
     }
     .info .email a:hover { color: var(--link-hover); }
     .info .address {
@@ -247,25 +167,18 @@
       margin-top: 6px;
     }
 
-    /* ── Photo reveal ── */
     .photo-wrap {
       flex-shrink: 0;
       width: 160px; height: 190px;
       overflow: hidden;
       border-radius: 3px;
-      clip-path: inset(100% 0 0 0);
-      transition: clip-path 0.85s cubic-bezier(0.77,0,0.18,1);
     }
-    .photo-wrap.revealed { clip-path: inset(0% 0 0 0); }
     .photo {
       width: 100%; height: 100%;
       object-fit: cover;
       display: block;
-      transition: transform 0.4s ease;
     }
-    .photo-wrap:hover .photo { transform: scale(1.05); }
 
-    /* ── Bottom section ── */
     .bottom-section {
       display: flex;
       align-items: flex-start;
@@ -279,12 +192,6 @@
       flex-shrink: 0;
     }
 
-    /* ── Magnetic button wrapper ── */
-    .mag-wrap {
-      display: block;
-      position: relative;
-    }
-
     .btn {
       display: block;
       padding: 10px 28px;
@@ -295,26 +202,10 @@
       font-weight: 500;
       text-align: center;
       border-radius: 3px;
-      position: relative;
-      overflow: hidden;
-      cursor: pointer;
-      will-change: transform;
-      transition: background 0.2s ease, color 0.2s ease;
+      transition: background 0.2s ease;
       white-space: nowrap;
     }
     .btn:hover { background: var(--btn-hover); }
-
-    /* Ripple */
-    .ripple {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.22);
-      transform: scale(0);
-      animation: ripple-anim 0.55s linear;
-      pointer-events: none;
-    }
-    [data-theme="dark"] .ripple { background: rgba(0,0,0,0.12); }
-    @keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
 
     .bio {
       flex: 1;
@@ -326,95 +217,8 @@
     }
     .bio strong { font-weight: 600; }
 
-    /* ── Featured link card ── */
-    .featured-link {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-top: 32px;
-      padding: 20px 24px;
-      background: linear-gradient(135deg, rgba(30,100,255,0.08), rgba(80,200,255,0.06));
-      border: 1px solid rgba(30,100,255,0.15);
-      border-radius: 12px;
-      text-decoration: none;
-      color: var(--text);
-      transition: all 0.3s cubic-bezier(0.23,1,0.32,1);
-      position: relative;
-      overflow: hidden;
-    }
-    .featured-link::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(30,100,255,0.06), rgba(80,200,255,0.04));
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .featured-link:hover::before { opacity: 1; }
-    .featured-link:hover {
-      border-color: rgba(30,100,255,0.3);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(30,100,255,0.1);
-    }
-    [data-theme="dark"] .featured-link {
-      background: linear-gradient(135deg, rgba(80,200,255,0.06), rgba(30,100,255,0.04));
-      border-color: rgba(80,200,255,0.12);
-    }
-    [data-theme="dark"] .featured-link:hover {
-      border-color: rgba(80,200,255,0.25);
-      box-shadow: 0 8px 24px rgba(80,200,255,0.08);
-    }
-    .featured-link-icon {
-      flex-shrink: 0;
-      width: 44px; height: 44px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #1e64ff, #50c8ff);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
-      color: #fff;
-      transition: transform 0.3s cubic-bezier(0.23,1,0.32,1);
-    }
-    .featured-link:hover .featured-link-icon { transform: scale(1.08) rotate(-3deg); }
-    .featured-link-text { flex: 1; min-width: 0; position: relative; z-index: 1; }
-    .featured-link-title {
-      font-weight: 500;
-      font-size: 0.95rem;
-      margin-bottom: 2px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .featured-link-title .arrow {
-      display: inline-block;
-      transition: transform 0.3s;
-      font-size: 0.85rem;
-      opacity: 0.5;
-    }
-    .featured-link:hover .featured-link-title .arrow { transform: translateX(3px); opacity: 1; }
-    .featured-link-desc {
-      font-size: 0.82rem;
-      color: var(--text-mute);
-      line-height: 1.4;
-    }
-    .featured-link-badge {
-      flex-shrink: 0;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      background: linear-gradient(135deg, #1e64ff, #50c8ff);
-      color: #fff;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* ── Responsive ── */
     @media (max-width: 700px) {
-      .glass-card { padding: 32px 24px; margin: 24px 16px; border-radius: 12px; }
+      .card { padding: 32px 24px; margin: 24px 16px; }
       .top-section { flex-direction: column-reverse; align-items: center; }
       .photo-wrap { width: 120px; height: 145px; }
       .info h1 { font-size: 1.7rem; }
@@ -428,48 +232,32 @@
 </head>
 <body>
 
-  <!-- Scroll progress bar -->
-  <div id="progress-bar"></div>
-
-  <!-- Particle canvas -->
-  <canvas id="particle-canvas"></canvas>
-
-  <!-- Theme toggle -->
   <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
     <span class="toggle-icon" id="toggle-label">☀️</span>
     <div class="toggle-track"><div class="toggle-knob"></div></div>
   </button>
 
-  <!-- Glassmorphism card -->
-  <div class="glass-card">
+  <div class="card">
 
     <div class="top-section">
       <div class="info">
-        <h1 id="typed-name">&nbsp;</h1>
-        <p class="title" id="typed-title">&nbsp;</p>
-        <p class="institution fade-in delay-3">University of Michigan - Ann Arbor</p>
-        <p class="email fade-in delay-3"><a href="mailto:dongheon@umich.edu">dongheon@umich.edu</a></p>
-        <p class="address fade-in delay-4">Ford Motor Company Robotics Building 2505 Hayward St, Ann Arbor, MI 48109</p>
+        <h1>Dong Heon Han</h1>
+        <p class="title">Robotics PhD Student | Large-Scale Robot Swarms</p>
+        <p class="institution">University of Michigan - Ann Arbor</p>
+        <p class="email"><a href="mailto:dongheon@umich.edu">dongheon@umich.edu</a></p>
+        <p class="address">Ford Motor Company Robotics Building 2505 Hayward St, Ann Arbor, MI 48109</p>
       </div>
-      <div class="photo-wrap" id="photo-wrap">
+      <div class="photo-wrap">
         <img class="photo" src="dongheon_headshot.jpg" alt="Dong Heon Han" />
       </div>
     </div>
 
-    <div class="bottom-section fade-in delay-4">
+    <div class="bottom-section">
       <div class="buttons">
-        <div class="mag-wrap">
-          <a class="btn" href="https://scholar.google.com/citations?user=BC46QFMAAAAJ&hl=en" target="_blank" rel="noopener">Scholar</a>
-        </div>
-        <div class="mag-wrap">
-          <a class="btn" href="dongheon_CV.pdf" target="_blank" rel="noopener">CV</a>
-        </div>
-        <div class="mag-wrap">
-          <a class="btn" href="https://github.com/dongheonh" target="_blank" rel="noopener">GitHub</a>
-        </div>
-        <div class="mag-wrap">
-          <a class="btn" href="https://www.linkedin.com/in/dongheon-han/" target="_blank" rel="noopener">LinkedIn</a>
-        </div>
+        <a class="btn" href="https://scholar.google.com/citations?user=BC46QFMAAAAJ&hl=en" target="_blank" rel="noopener">Scholar</a>
+        <a class="btn" href="dongheon_CV.pdf" target="_blank" rel="noopener">CV</a>
+        <a class="btn" href="https://github.com/dongheonh" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn" href="https://www.linkedin.com/in/dongheon-han/" target="_blank" rel="noopener">LinkedIn</a>
       </div>
       <div class="bio">
         <p>
@@ -480,40 +268,9 @@
       </div>
     </div>
 
-    <!-- Featured project link -->
-    <a class="featured-link fade-in delay-4" href="https://dongheonh.github.io/virtualagents/" target="_blank" rel="noopener">
-      <div class="featured-link-icon">&#x2B22;</div>
-      <div class="featured-link-text">
-        <div class="featured-link-title">Virtual Agents — Interactive Swarm Simulation <span class="arrow">&rarr;</span></div>
-        <div class="featured-link-desc">Explore swarmalator dynamics with real-time group detection and electromagnetic control</div>
-      </div>
-      <span class="featured-link-badge">Live Demo</span>
-    </a>
-
-    <!-- Hardware design link -->
-    <a class="featured-link fade-in delay-4" href="https://github.com/dongheonh/microrobot-1024" target="_blank" rel="noopener" style="margin-top: 12px;">
-      <div class="featured-link-icon" style="background: linear-gradient(135deg, #ff6b35, #ffc234);">&#x2699;</div>
-      <div class="featured-link-text">
-        <div class="featured-link-title">Microrobot-1024 — Full System Design <span class="arrow">&rarr;</span></div>
-        <div class="featured-link-desc">Hardware schematics, circuit design, system architecture, and firmware for a 1024-coil electromagnetic swarm platform</div>
-      </div>
-      <span class="featured-link-badge" style="background: linear-gradient(135deg, #ff6b35, #ffc234);">Open Source</span>
-    </a>
-
-    <!-- Swarm game link -->
-    <a class="featured-link fade-in delay-4" href="https://dongheonh.github.io/virtualagents/game.html" target="_blank" rel="noopener" style="margin-top: 12px;">
-      <div class="featured-link-icon" style="background: linear-gradient(135deg, #e040fb, #536dfe);">&#x1F3AE;</div>
-      <div class="featured-link-text">
-        <div class="featured-link-title">Swarm Game — Can You Outsmart the Swarm? <span class="arrow">&rarr;</span></div>
-        <div class="featured-link-desc">Command electromagnetic fields to herd chaotic micro-agents into formation before time runs out</div>
-      </div>
-      <span class="featured-link-badge" style="background: linear-gradient(135deg, #e040fb, #536dfe);">Play Now</span>
-    </a>
-
   </div>
 
   <script>
-    /* ── Theme ── */
     const html  = document.documentElement;
     const label = document.getElementById('toggle-label');
     const saved = localStorage.getItem('theme');
@@ -528,262 +285,6 @@
       label.textContent = next === 'dark' ? '🌙' : '☀️';
       localStorage.setItem('theme', next);
     }
-
-    /* ── Scroll progress bar ── */
-    const bar = document.getElementById('progress-bar');
-    window.addEventListener('scroll', () => {
-      const h = document.documentElement;
-      const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
-      bar.style.width = (isNaN(pct) ? 0 : pct) + '%';
-    });
-
-    /* ── Ripple ── */
-    document.querySelectorAll('.btn').forEach(btn => {
-      btn.addEventListener('click', function(e) {
-        const rect = this.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
-        const r = document.createElement('span');
-        r.className = 'ripple';
-        r.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
-        this.appendChild(r);
-        r.addEventListener('animationend', () => r.remove());
-      });
-    });
-
-    /* ── Magnetic buttons ── */
-    document.querySelectorAll('.mag-wrap').forEach(wrap => {
-      const btn = wrap.querySelector('.btn');
-      const STRENGTH = 0.38;
-
-      wrap.addEventListener('mousemove', e => {
-        const rect = wrap.getBoundingClientRect();
-        const cx = rect.left + rect.width  / 2;
-        const cy = rect.top  + rect.height / 2;
-        const dx = (e.clientX - cx) * STRENGTH;
-        const dy = (e.clientY - cy) * STRENGTH;
-        btn.style.transform = `translate(${dx}px, ${dy}px)`;
-      });
-
-      wrap.addEventListener('mouseleave', () => {
-        btn.style.transition = 'transform 0.45s cubic-bezier(0.23,1,0.32,1), background 0.2s ease, color 0.2s ease';
-        btn.style.transform  = 'translate(0,0)';
-        setTimeout(() => btn.style.transition = '', 450);
-      });
-    });
-
-    /* ── Typing animation ── */
-    function typeText(el, text, speed, onDone) {
-      let i = 0;
-      const cursor = document.createElement('span');
-      cursor.className = 'typing-cursor';
-      el.innerHTML = '';
-      el.appendChild(cursor);
-      const t = setInterval(() => {
-        el.insertBefore(document.createTextNode(text[i++]), cursor);
-        if (i === text.length) {
-          clearInterval(t);
-          if (onDone) onDone();
-          else setTimeout(() => cursor.remove(), 1200);
-        }
-      }, speed);
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      const nameEl  = document.getElementById('typed-name');
-      const titleEl = document.getElementById('typed-title');
-
-      // Photo reveal trigger
-      setTimeout(() => {
-        document.getElementById('photo-wrap').classList.add('revealed');
-      }, 200);
-
-      // Typing animation
-      typeText(nameEl, 'Dong Heon Han', 60, () => {
-        setTimeout(() => {
-          nameEl.querySelector('.typing-cursor')?.remove();
-          typeText(titleEl, 'Robotics PhD Student | Robotics Hardware & Systems Architecture', 28);
-        }, 300);
-      });
-    });
-
-    /* ── Scroll fade-in ── */
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-    setTimeout(() => {
-      document.querySelectorAll('.fade-in').forEach(el => {
-        if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('visible');
-      });
-    }, 100);
-
-    /* ── Swarmalator + Electromagnet canvas ── */
-    const canvas = document.getElementById('particle-canvas');
-    const ctx    = canvas.getContext('2d');
-    let W, H, mouseX = -9999, mouseY = -9999;
-    const particles = [];
-    const COUNT = 1000;
-
-    window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
-    window.addEventListener('mouseleave', () => { mouseX = -9999; mouseY = -9999; });
-
-    // ── Electromagnet grid (offset / zigzag rows) ──
-    const MAG_SX    = 88;          // horizontal spacing
-    const MAG_SY    = 68;          // vertical spacing
-    const MAG_R     = 13;          // visual radius (1/2 of 27)
-    const DETECT_R  = 62;          // particle detection radius
-    const DETECT_R2 = DETECT_R * DETECT_R;
-    const DENSITY_MAX = 14;        // particles for full brightness (wider range = finer gradation)
-    const DENSITY_THRESHOLD = 5;   // particles required before any glow starts
-    let magnets = [];
-
-    function buildMagnets() {
-      magnets = [];
-      const cols = Math.ceil(W / MAG_SX) + 2;
-      const rows = Math.ceil(H / MAG_SY) + 2;
-      for (let row = -1; row <= rows; row++) {
-        const offset = (((row % 2) + 2) % 2 === 1) ? MAG_SX / 2 : 0;
-        for (let col = -1; col <= cols; col++) {
-          magnets.push({ x: col * MAG_SX + offset, y: row * MAG_SY, brightness: 0 });
-        }
-      }
-    }
-
-    function resize() {
-      W = canvas.width  = window.innerWidth;
-      H = canvas.height = window.innerHeight;
-      buildMagnets();
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    // ── Particles ──
-    const R        = 3;
-    const MIN_GAP  = R * 12;   // doubled (was R*6)
-    const MIN_DIST = R * 2 + MIN_GAP;
-
-    for (let i = 0; i < COUNT; i++) {
-      particles.push({
-        x: Math.random() * W, y: Math.random() * H,
-        vx: (Math.random()-0.5)*1.2, vy: (Math.random()-0.5)*1.2,
-        phase: Math.random() * Math.PI * 2, r: R
-      });
-    }
-
-    const MOUSE_RANGE = 200, MOUSE_FORCE = 0.55;
-    const SEP_DIST = MIN_DIST, ATT_DIST = 95;
-    const SEP_F = 0.55, ATT_F = 0.014;
-    const MAX_SPD = 4, DAMP = 0.96;
-
-    // Color cache (avoid getComputedStyle every frame)
-    let colorCache = null, lastTheme = '';
-    function getColors() {
-      const theme = html.getAttribute('data-theme');
-      if (theme === lastTheme && colorCache) return colorCache;
-      lastTheme = theme;
-      const isDark = theme === 'dark';
-      colorCache = {
-        particle: getComputedStyle(html).getPropertyValue('--particle-color').trim(),
-        magOff: isDark ? '55,55,60'   : '165,163,158',
-        magOn:  isDark ? '80,200,255' : '30,100,255'
-      };
-      return colorCache;
-    }
-
-    function drawFrame() {
-      ctx.clearRect(0, 0, W, H);
-      const C = getColors();
-
-      // ── 1. Compute density: accumulate from particles into magnets ──
-      for (let m = 0; m < magnets.length; m++) magnets[m]._c = 0;
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
-        for (let m = 0; m < magnets.length; m++) {
-          const mg = magnets[m];
-          const dx = p.x - mg.x, dy = p.y - mg.y;
-          if (dx*dx + dy*dy < DETECT_R2) mg._c++;
-        }
-      }
-
-      // ── 2. Draw electromagnets (behind particles) ──
-      for (let m = 0; m < magnets.length; m++) {
-        const mg = magnets[m];
-        // non-linear mapping: sqrt gives fine gradation at low density, pow gives fine gradation at high
-        const raw    = Math.max(0, Math.min((mg._c - DENSITY_THRESHOLD) / (DENSITY_MAX - DENSITY_THRESHOLD), 1));
-        const target = Math.pow(raw, 0.55);            // sqrt-ish curve: low end is more expressive
-        mg.brightness += (target - mg.brightness) * 0.08; // gentle lerp for smooth fade
-        const b = mg.brightness;
-
-        // always draw base ring (faint, shows grid structure)
-        ctx.beginPath();
-        ctx.arc(mg.x, mg.y, MAG_R, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(${C.magOff},${0.10 + b * 0.08})`;
-        ctx.lineWidth = 0.8;
-        ctx.stroke();
-
-        if (b > 0.015) {
-          // radial gradient — bright core fading outward (much more nuanced than flat fill)
-          const grad = ctx.createRadialGradient(mg.x, mg.y, 0, mg.x, mg.y, MAG_R * (1 + b * 0.6));
-          grad.addColorStop(0,   `rgba(${C.magOn},${b * 0.92})`);
-          grad.addColorStop(0.45,`rgba(${C.magOn},${b * 0.55})`);
-          grad.addColorStop(0.8, `rgba(${C.magOn},${b * 0.18})`);
-          grad.addColorStop(1,   `rgba(${C.magOn},0)`);
-
-          ctx.beginPath();
-          ctx.arc(mg.x, mg.y, MAG_R * (1 + b * 0.6), 0, Math.PI * 2);
-          ctx.fillStyle = grad;
-          ctx.fill();
-        }
-      }
-
-      // ── 3. Particle physics ──
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
-
-        // Mouse attraction
-        const mdx = mouseX - p.x, mdy = mouseY - p.y;
-        const md = Math.sqrt(mdx*mdx + mdy*mdy);
-        if (md < MOUSE_RANGE && md > 1) {
-          const f = MOUSE_FORCE * (1 - md / MOUSE_RANGE);
-          p.vx += (mdx/md)*f; p.vy += (mdy/md)*f;
-        }
-
-        // Swarmalator coupling
-        for (let j = i+1; j < particles.length; j++) {
-          const q = particles[j];
-          const dx = q.x-p.x, dy = q.y-p.y;
-          const d = Math.sqrt(dx*dx+dy*dy);
-          if (d < 1 || d > ATT_DIST) continue;
-          const nx = dx/d, ny = dy/d;
-          if (d < SEP_DIST) {
-            const f = SEP_F*(1-d/SEP_DIST);
-            p.vx-=nx*f; p.vy-=ny*f; q.vx+=nx*f; q.vy+=ny*f;
-          } else {
-            const sync = (1+Math.cos(q.phase-p.phase))*0.5;
-            const f = ATT_F*sync;
-            p.vx+=nx*f; p.vy+=ny*f; q.vx-=nx*f; q.vy-=ny*f;
-            const dp = 0.0008*Math.sin(q.phase-p.phase);
-            p.phase+=dp; q.phase-=dp;
-          }
-        }
-
-        p.vx*=DAMP; p.vy*=DAMP;
-        const spd = Math.sqrt(p.vx*p.vx+p.vy*p.vy);
-        if (spd > MAX_SPD) { p.vx=p.vx/spd*MAX_SPD; p.vy=p.vy/spd*MAX_SPD; }
-        p.x = (p.x+p.vx+W)%W;
-        p.y = (p.y+p.vy+H)%H;
-
-        // Draw disc (on top of magnets)
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-        ctx.fillStyle = `rgba(${C.particle},0.65)`;
-        ctx.fill();
-      }
-
-      requestAnimationFrame(drawFrame);
-    }
-    drawFrame();
   </script>
 
 </body>
